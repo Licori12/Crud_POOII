@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.crud.controller.TarefaController"
+            prefHeight="550.0" prefWidth="750.0">
+
+    <VBox spacing="10.0" alignment="CENTER" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+        <Label text="Gerenciar Tarefas" style="-fx-font-size: 20px;"/>
+
+        <HBox spacing="10.0" alignment="CENTER">
+            <TextField fx:id="tituloField" promptText="Título da Tarefa" />
+            <TextField fx:id="descricaoField" promptText="Descrição"/>
+            <Button text="Adicionar" onAction="#adicionarTarefa"/>
+        </HBox>
+
+        <!-- Campo de descrição adicionado -->
+
+        <TableView fx:id="tabelaTarefas">
+            <columns>
+                <TableColumn text="ID" fx:id="idColuna" />
+                <TableColumn text="Título" fx:id="tituloColuna" />
+                <TableColumn text="Descrição" fx:id="descricaoColuna" />
+                <TableColumn text="Data" fx:id="dataColuna" />
+            </columns>
+        </TableView>
+
+        <HBox spacing="10.0" alignment="CENTER">
+            <Button text="Editar" onAction="#editarTarefa"/>
+            <Button text="Excluir" onAction="#excluirTarefa"/>
+        </HBox>
+    </VBox>
+
+</AnchorPane>
