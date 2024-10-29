@@ -24,7 +24,6 @@
                 <TableColumn text="ID" fx:id="idColuna" />
                 <TableColumn text="Título" fx:id="tituloColuna" />
                 <TableColumn text="Descrição" fx:id="descricaoColuna" />
-                <TableColumn text="Data" fx:id="dataColuna" />
             </columns>
         </TableView>
 

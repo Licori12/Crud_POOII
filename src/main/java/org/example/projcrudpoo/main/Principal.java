@@ -7,12 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Principal extends Application {
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Carregar o arquivo FXML
 
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/org/example/projcrudpoo/view/TarefaView.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/org/example/projcrudpoo/view/LoginView.fxml"));
         Parent root = loader.load();
         // Configurar a cena
         Scene scene = new Scene(root);
