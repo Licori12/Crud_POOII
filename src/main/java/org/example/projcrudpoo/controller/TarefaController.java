@@ -7,10 +7,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 public class TarefaController {
-
-    @FXML
-    private TableColumn<?, ?> dataColuna;
-
     @FXML
     private TableColumn<?, ?> descricaoColuna;
 
