@@ -5,29 +5,41 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import org.example.projcrudpoo.dao.TarefaDBDAO;
+import org.example.projcrudpoo.dao.UsuarioDBDAO;
+import org.example.projcrudpoo.model.Tarefa;
+import org.example.projcrudpoo.model.Usuario;
+
+import java.sql.SQLException;
 
 public class TarefaController {
+    private Usuario usuarioLogado;
+
     @FXML
-    private TableColumn<?, ?> descricaoColuna;
+    private TableColumn<Tarefa, String> descricaoColuna;
 
     @FXML
     private TextField descricaoField;
 
     @FXML
-    private TableColumn<?, ?> idColuna;
+    private TableColumn<Tarefa, Integer> idColuna;
 
     @FXML
-    private TableView<?> tabelaTarefas;
+    private TableView<Tarefa> tabelaTarefas;
 
     @FXML
-    private TableColumn<?, ?> tituloColuna;
+    private TableColumn<Tarefa, String> tituloColuna;
 
     @FXML
     private TextField tituloField;
 
     @FXML
-    void adicionarTarefa(ActionEvent event) {
+    void adicionarTarefa(ActionEvent event) throws SQLException {
+        UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
+        Tarefa tarefa = new Tarefa(tituloField.getText(), descricaoField.getText(), usuarioDB.buscaId(usuarioLogado));
+        TarefaDBDAO tarefaDB = new TarefaDBDAO();
 
+        tarefaDB.insere(tarefa);
     }
 
     @FXML
@@ -40,4 +52,7 @@ public class TarefaController {
 
     }
 
+    public void setUsuarioLogado(Usuario usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
 }

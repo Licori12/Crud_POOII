@@ -10,13 +10,12 @@ public class Principal extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Carregar o arquivo FXML
-
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/org/example/projcrudpoo/view/LoginView.fxml"));
         Parent root = loader.load();
         // Configurar a cena
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Gerenciador de Tarefas");
+        primaryStage.setTitle("Login - Gerenciador de Tarefas");
         primaryStage.setResizable(false);
         primaryStage.show();
     }
