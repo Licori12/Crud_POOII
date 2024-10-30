@@ -6,9 +6,9 @@ public class Tarefa {
     private String status;
     private int idUsuario;
 
-    public Tarefa(String descricao, String status, String titulo, int idUsuario ) {
+    public Tarefa(String titulo, String descricao, int idUsuario) {
         this.descricao = descricao;
-        this.status = status;
+        this.status = "Pendente";
         this.titulo = titulo;
         this.idUsuario = idUsuario;
     }
@@ -27,5 +27,17 @@ public class Tarefa {
 
     public int getIdUsuario() {
         return idUsuario;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 }
