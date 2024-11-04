@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TarefaDBDAO implements IConst, TarefaDAO{
@@ -47,8 +48,27 @@ public class TarefaDBDAO implements IConst, TarefaDAO{
     }
 
     @Override
-    public List<Tarefa> listTodos(int idUsuario) throws SQLException {
-        return List.of();
+    public ArrayList<Tarefa> listTodos(int idUsuario) throws SQLException {
+        open();
+        sql = "SELECT * FROM tarefa WHERE id_usuario = ? ;";
+        statement = connection.prepareStatement(sql);
+        statement.setInt(1,idUsuario);
+        result = statement.executeQuery();
+
+        ArrayList<Tarefa> tarefas = new ArrayList<>();
+
+        while(result.next()){
+            Tarefa tarefa = new Tarefa();
+            tarefa.setTitulo(result.getString("titulo"));
+            tarefa.setDescricao(result.getString("descricao"));
+            tarefa.setStatus(result.getString("status"));
+            tarefa.setId(result.getInt("id"));
+
+            tarefas.add(tarefa);
+        }
+        close();
+
+        return tarefas;
     }
 
     @Override
