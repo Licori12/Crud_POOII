@@ -44,7 +44,12 @@ public class TarefaDBDAO implements IConst, TarefaDAO{
 
     @Override
     public void remove(Tarefa tarefa) throws SQLException {
-
+        open();
+        sql = "DELETE FROM tarefa WHERE id = ?;";
+        statement = connection.prepareStatement(sql);
+        statement.setInt(1,tarefa.getId());
+        statement.executeUpdate();
+        close();
     }
 
     @Override
