@@ -66,6 +66,11 @@ public class TarefaController {
         TarefaDBDAO tarefaDB = new TarefaDBDAO();
 
         tarefaDB.insere(tarefa);
+        Alert mensagem = new Alert(Alert.AlertType.INFORMATION);
+        mensagem.setTitle("Sucesso");
+        mensagem.setHeaderText(null);
+        mensagem.setContentText("Tarefa adicionada com sucesso");
+        mensagem.showAndWait();
         limparCampos();
         carregar();
     }
@@ -86,7 +91,11 @@ public class TarefaController {
                 stage.setScene(new Scene(root));
                 stage.setTitle("Editar Tarefa");
                 stage.showAndWait();
-
+                Alert mensagem = new Alert(Alert.AlertType.INFORMATION);
+                mensagem.setTitle("Sucesso");
+                mensagem.setHeaderText(null);
+                mensagem.setContentText("Tarefa modificada com sucesso");
+                mensagem.showAndWait();
                 // Atualizar a tabela após a edição
                 carregar(); // Chame o método para recarregar as tarefas
 
@@ -113,13 +122,22 @@ public class TarefaController {
             TarefaDBDAO tarefaDB = new TarefaDBDAO();
             try {
                 tarefaDB.remove(tarefaSelecionada);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Sucesso");
+                alert.setHeaderText(null);
+                alert.setContentText("Tarefa excluida com sucesso");
+                alert.showAndWait();
                 carregar();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         else{
-            System.out.println("Selecione uma tarefa para excluir.");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Nenhuma Tarefa Selecionada");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, selecione uma tarefa para editar.");
+            alert.showAndWait();
         }
     }
 
@@ -136,12 +154,21 @@ public class TarefaController {
 
     public void alterarStatus(ActionEvent event) throws SQLException {
         Tarefa tarefaSelecionada = tabelaTarefas.getSelectionModel().getSelectedItem();
-        tarefaSelecionada.setStatus();
+        if(tarefaSelecionada != null){
+            tarefaSelecionada.setStatus();
 
-        TarefaDBDAO tarefaDB = new TarefaDBDAO();
-        tarefaDB.marcarComoConcluida(tarefaSelecionada);
+            TarefaDBDAO tarefaDB = new TarefaDBDAO();
+            tarefaDB.marcarComoConcluida(tarefaSelecionada);
 
-        carregar();
+            carregar();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Nenhuma Tarefa Selecionada");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, selecione uma tarefa.");
+            alert.showAndWait();
+        }
     }
 
     public void limparCampos(){

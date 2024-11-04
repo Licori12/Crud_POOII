@@ -1,38 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.projcrudpoo.controller.TarefaController"
-            prefHeight="550.0" prefWidth="750.0">
+<AnchorPane prefHeight="511.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.projcrudpoo.controller.TarefaController">
 
-    <VBox spacing="10.0" alignment="CENTER" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
-        <Label text="Gerenciar Tarefas" style="-fx-font-size: 20px;"/>
+    <VBox alignment="CENTER" spacing="10.0" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+      <ImageView fitHeight="120.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+         <VBox.margin>
+            <Insets top="-100.0" />
+         </VBox.margin>
+         <image>
+            <Image url="@../image/logo_Unicentro-01-1.png" />
+         </image>
+      </ImageView>
+        <Label style="-fx-font-size: 20px;" text="Gerenciar Tarefas" />
 
-        <HBox spacing="10.0" alignment="CENTER">
+        <HBox alignment="CENTER" spacing="10.0">
             <TextField fx:id="tituloField" promptText="Título da Tarefa" />
-            <TextField fx:id="descricaoField" promptText="Descrição"/>
-            <Button text="Adicionar" onAction="#adicionarTarefa"/>
+            <TextField fx:id="descricaoField" promptText="Descrição" />
+            <Button onAction="#adicionarTarefa" text="Adicionar" />
         </HBox>
 
         <!-- Campo de descrição adicionado -->
 
-        <TableView fx:id="tabelaTarefas">
+        <TableView fx:id="tabelaTarefas" prefHeight="235.0" prefWidth="710.0">
             <columns>
-                <TableColumn text="ID" fx:id="idColuna" />
-                <TableColumn text="Título" fx:id="tituloColuna" />
-                <TableColumn text="Descrição" fx:id="descricaoColuna" />
-                <TableColumn text="Status" fx:id="statusColuna"/>
+                <TableColumn fx:id="idColuna" text="ID" />
+                <TableColumn fx:id="tituloColuna" text="Título" />
+                <TableColumn fx:id="descricaoColuna" text="Descrição" />
+                <TableColumn fx:id="statusColuna" text="Status" />
             </columns>
         </TableView>
 
-        <HBox spacing="10.0" alignment="CENTER">
-            <Button text="Editar" onAction="#editarTarefa"/>
-            <Button text="Excluir" onAction="#excluirTarefa"/>
-            <Button text="Alterar Status" onAction="#alterarStatus"/>
+        <HBox alignment="CENTER" spacing="10.0">
+            <Button onAction="#editarTarefa" text="Editar" />
+            <Button onAction="#excluirTarefa" text="Excluir" />
+            <Button onAction="#alterarStatus" text="Alterar Status" />
         </HBox>
+      <padding>
+         <Insets bottom="10.0" left="10.0" right="10.0" top="110.0" />
+      </padding>
     </VBox>
 
 </AnchorPane>

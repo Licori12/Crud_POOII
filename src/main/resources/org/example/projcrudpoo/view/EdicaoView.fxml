@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.projcrudpoo.controller.EdicaoController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="org.example.projcrudpoo.controller.EdicaoController">
     <children>
-        <Label text="Editar Tarefa" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10"/>
-        <Label text="Título:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="50"/>
-        <TextField fx:id="tituloField" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="50"/>
+        <Label text="Editar Tarefa" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10" />
+        <Label text="Título:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="50" />
+        <TextField fx:id="tituloField" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="50" />
 
-        <Label text="Descrição:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="100"/>
-        <TextArea fx:id="descricaoField" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="100" prefHeight="100"
-                  prefWidth="300"/>
+        <Label text="Descrição:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="100" />
+        <TextArea fx:id="descricaoField" prefHeight="100" prefWidth="300" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="100" />
 
-        <Button text="Salvar" onAction="#salvarTarefa" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="270"/>
-        <Button text="Cancelar" onAction="#cancelar" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="270"/>
+        <Button layoutX="115.0" layoutY="213.0" onAction="#salvarTarefa" text="Salvar" AnchorPane.leftAnchor="115.0" AnchorPane.topAnchor="213.0" />
+        <Button layoutX="115.0" layoutY="245.0" onAction="#cancelar" text="Cancelar" AnchorPane.leftAnchor="115.0" AnchorPane.topAnchor="245.0" />
     </children>
+   <padding>
+      <Insets bottom="20.0" left="15.0" right="30.0" top="-2.0" />
+   </padding>
 </AnchorPane>

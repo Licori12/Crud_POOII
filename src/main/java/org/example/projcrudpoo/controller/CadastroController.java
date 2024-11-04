@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -20,8 +20,6 @@ public class CadastroController {
     @FXML
     private TextField emailField;
     @FXML
-    private Label mensagemErro;
-    @FXML
     private PasswordField passwordField;
     @FXML
     private TextField usernameField;
@@ -30,6 +28,11 @@ public class CadastroController {
         Usuario usuario = new Usuario(emailField.getText(),usernameField.getText(),passwordField.getText());
         UsuarioDBDAO usuarioDAO = new UsuarioDBDAO();
         usuarioDAO.cadastrar(usuario);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText(null);
+        alert.setContentText("Usuário cadastrado com sucesso!");
+        alert.showAndWait();
     }
 
     @FXML
