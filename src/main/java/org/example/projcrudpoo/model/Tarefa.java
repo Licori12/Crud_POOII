@@ -5,6 +5,19 @@ public class Tarefa {
     private String descricao;
     private String status;
     private int idUsuario;
+    private int id;
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Tarefa(String titulo, String descricao, int idUsuario) {
         this.descricao = descricao;
@@ -12,6 +25,7 @@ public class Tarefa {
         this.titulo = titulo;
         this.idUsuario = idUsuario;
     }
+    public Tarefa(){};
 
     public String getDescricao() {
         return descricao;

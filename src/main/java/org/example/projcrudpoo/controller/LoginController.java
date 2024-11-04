@@ -43,7 +43,7 @@ public class LoginController {
         }
     }
 
-    void irCrud(Usuario usuario) throws IOException {
+    void irCrud(Usuario usuario) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/org/example/projcrudpoo/view/TarefaView.fxml"));
         Parent root = loader.load();
 
