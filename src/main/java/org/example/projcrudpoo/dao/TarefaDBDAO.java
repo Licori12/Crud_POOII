@@ -39,7 +39,16 @@ public class TarefaDBDAO implements IConst, TarefaDAO{
 
     @Override
     public void atualiza(Tarefa tarefa) throws SQLException {
+        open();
+        sql = "UPDATE tarefa SET titulo=?, descricao=? WHERE id = ?";
+        statement = connection.prepareStatement(sql);
 
+        statement.setString(1,tarefa.getTitulo());
+        statement.setString(2, tarefa.getDescricao());
+        statement.setInt(3,tarefa.getId());
+        statement.executeUpdate();
+
+        close();
     }
 
     @Override

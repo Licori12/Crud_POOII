@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.projcrudpoo.controller.EdicaoController">
+    <children>
+        <Label text="Editar Tarefa" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10"/>
+        <Label text="Título:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="50"/>
+        <TextField fx:id="tituloField" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="50"/>
+
+        <Label text="Descrição:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="100"/>
+        <TextArea fx:id="descricaoField" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="100" prefHeight="100"
+                  prefWidth="300"/>
+
+        <Button text="Salvar" onAction="#salvarTarefa" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="270"/>
+        <Button text="Cancelar" onAction="#cancelar" AnchorPane.leftAnchor="200" AnchorPane.topAnchor="270"/>
+    </children>
+</AnchorPane>
