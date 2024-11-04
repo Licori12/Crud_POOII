@@ -4,15 +4,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.example.projcrudpoo.dao.TarefaDBDAO;
 import org.example.projcrudpoo.dao.UsuarioDBDAO;
 import org.example.projcrudpoo.model.Tarefa;
 import org.example.projcrudpoo.model.Usuario;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class TarefaController {
@@ -40,8 +46,6 @@ public class TarefaController {
     @FXML
     private TableColumn<Tarefa,String> statusColuna;
 
-    @FXML
-    private TextField statusField;
 
     @FXML
     public void initialize() throws SQLException {
@@ -67,8 +71,38 @@ public class TarefaController {
 
     @FXML
     void editarTarefa(ActionEvent event) {
+        Tarefa tarefaSelecionada = tabelaTarefas.getSelectionModel().getSelectedItem();
 
+        if (tarefaSelecionada != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/projcrudpoo/view/EdicaoView.fxml"));
+                Parent root = loader.load();
+
+                EdicaoController controller = loader.getController();
+                controller.setTarefa(tarefaSelecionada); // Passando a tarefa selecionada para o controlador
+
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Editar Tarefa");
+                stage.showAndWait();
+
+                // Atualizar a tabela após a edição
+                carregar(); // Chame o método para recarregar as tarefas
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);}
+        } else {
+            // Exibir um alerta se nenhuma tarefa estiver selecionada
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Nenhuma Tarefa Selecionada");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, selecione uma tarefa para editar.");
+            alert.showAndWait();
+        }
     }
+
 
     @FXML
     void excluirTarefa(ActionEvent event) {
