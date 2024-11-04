@@ -38,11 +38,18 @@ public class TarefaController {
     private TextField tituloField;
 
     @FXML
+    private TableColumn<Tarefa,String> statusColuna;
+
+    @FXML
+    private TextField statusField;
+
+    @FXML
     public void initialize() throws SQLException {
         // Configura as colunas da tabela para mostrar os dados da Tarefa
         idColuna.setCellValueFactory(new PropertyValueFactory<>("id"));
         tituloColuna.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         descricaoColuna.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        statusColuna.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Inicializa a lista de tarefas e carrega dados
         listaTarefa = FXCollections.observableArrayList();
@@ -65,7 +72,20 @@ public class TarefaController {
 
     @FXML
     void excluirTarefa(ActionEvent event) {
+        Tarefa tarefaSelecionada = tabelaTarefas.getSelectionModel().getSelectedItem();
 
+        if(tarefaSelecionada != null){
+            TarefaDBDAO tarefaDB = new TarefaDBDAO();
+            try {
+                tarefaDB.remove(tarefaSelecionada);
+                carregar();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            System.out.println("Selecione uma tarefa para excluir.");
+        }
     }
 
     public void setUsuarioLogado(Usuario usuarioLogado) throws SQLException {
