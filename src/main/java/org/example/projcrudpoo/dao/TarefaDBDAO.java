@@ -86,7 +86,13 @@ public class TarefaDBDAO implements IConst, TarefaDAO{
     }
 
     @Override
-    public void marcarComoConcluida(int id) throws SQLException {
-
+    public void marcarComoConcluida(Tarefa tarefa) throws SQLException {
+        open();
+        sql = "UPDATE tarefa SET status=? WHERE id = ?;";
+        statement = connection.prepareStatement(sql);
+        statement.setString(1,tarefa.getStatus());
+        statement.setInt(2,tarefa.getId());
+        statement.executeUpdate();
+        close();
     }
 }

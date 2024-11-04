@@ -51,6 +51,10 @@ public class Tarefa {
         this.status = status;
     }
 
+    public void setStatus(){
+        this.status = this.status.equals("Pendente") ? "Concluida" : "Pendente";
+    }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
