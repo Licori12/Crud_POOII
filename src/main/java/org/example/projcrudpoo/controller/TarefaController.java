@@ -66,6 +66,7 @@ public class TarefaController {
         TarefaDBDAO tarefaDB = new TarefaDBDAO();
 
         tarefaDB.insere(tarefa);
+        limparCampos();
         carregar();
     }
 
@@ -132,5 +133,21 @@ public class TarefaController {
         UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
         listaTarefa.setAll(tarefaDB.listTodos(usuarioDB.buscaId(usuarioLogado)));
     }
+
+    public void alterarStatus(ActionEvent event) throws SQLException {
+        Tarefa tarefaSelecionada = tabelaTarefas.getSelectionModel().getSelectedItem();
+        tarefaSelecionada.setStatus();
+
+        TarefaDBDAO tarefaDB = new TarefaDBDAO();
+        tarefaDB.marcarComoConcluida(tarefaSelecionada);
+
+        carregar();
+    }
+
+    public void limparCampos(){
+        tituloField.clear();
+        descricaoField.clear();
+    }
+
 
 }

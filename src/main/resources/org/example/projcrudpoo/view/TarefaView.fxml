@@ -31,6 +31,7 @@
         <HBox spacing="10.0" alignment="CENTER">
             <Button text="Editar" onAction="#editarTarefa"/>
             <Button text="Excluir" onAction="#excluirTarefa"/>
+            <Button text="Alterar Status" onAction="#alterarStatus"/>
         </HBox>
     </VBox>
 

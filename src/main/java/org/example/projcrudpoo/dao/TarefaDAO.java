@@ -10,6 +10,6 @@ public interface TarefaDAO {
     public void atualiza(Tarefa tarefa) throws SQLException;
     public void remove(Tarefa tarefa) throws SQLException;
     public List<Tarefa> listTodos(int idUsuario) throws SQLException;
-    public void marcarComoConcluida(int id) throws SQLException;
+    public void marcarComoConcluida(Tarefa tarefa) throws SQLException;
 
 }
