@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.example.projcrudpoo.dao.TarefaDBDAO;
@@ -178,7 +175,7 @@ public class TarefaController {
         descricaoField.clear();
     }
 
-    public void gerarRelatorio() throws SQLException {
+    public void gerarRelatorio(ActionEvent event) throws SQLException {
         TarefaDBDAO tarefaDB = new TarefaDBDAO();
         UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
         Exportador exportador = new Exportador();
@@ -198,6 +195,37 @@ public class TarefaController {
             alert.showAndWait();
         }
 
+    }
+
+    public void sair(){
+        Alert mensagem = new Alert(Alert.AlertType.CONFIRMATION);
+        mensagem.setTitle("Voltar ao login");
+        mensagem.setHeaderText(null);
+        mensagem.setContentText("Deseja voltar ao Login?");
+
+        // Mostra o alerta e aguarda a resposta
+        mensagem.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    // Carrega a tela de login
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/projcrudpoo/view/LoginView.fxml"));
+                    Parent loginView = loader.load();
+
+                    // Obtém o stage atual e fecha a janela
+                    Stage stageAtual = (Stage) tabelaTarefas.getScene().getWindow();
+                    stageAtual.close();
+
+                    // Cria uma nova cena para o login
+                    Stage stageLogin = new Stage();
+                    stageLogin.setScene(new Scene(loginView));
+                    stageLogin.setTitle("Login - Gerenciador de Tarefas");
+                    stageLogin.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
