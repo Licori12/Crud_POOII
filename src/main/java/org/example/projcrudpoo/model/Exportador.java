@@ -36,8 +36,13 @@ public class Exportador {
             writer.write("=====================");
             writer.newLine();
 
+            writer.write("-------------TAREFAS-------------");
+            writer.newLine();
+
             // Escrever os detalhes das tarefas
             for (Tarefa tarefa : tarefas) {
+                writer.write("=====================");
+                writer.newLine();
                 writer.write("ID: " + tarefa.getId());
                 writer.newLine();
                 writer.write("Titulo: " + tarefa.getTitulo());
@@ -47,6 +52,8 @@ public class Exportador {
                 writer.write("Status: " + tarefa.getStatus());
                 writer.newLine();
             }
+            writer.write("=====================");
+            writer.newLine();
             return true;
         } catch (IOException e) {
             // Em caso de erro, retorna false
@@ -60,13 +67,17 @@ public class Exportador {
         return sdf.format(new Date());
     }
 
-    // Método para extrair apenas a parte da data (dia/mês/ano)
     private String mostrarData() {
         String dataHora = obterDataHoraAtual();
         String data = "";
-        for (int i = 0; i < 8; i++) {
-            data += dataHora.charAt(i);
-        }
+
+        data += dataHora.substring(0, 2);
+        data += "/";
+        data += dataHora.substring(2, 4);
+        data += "/";
+        data += dataHora.substring(4, 8);
+
         return data;
     }
+
 }
