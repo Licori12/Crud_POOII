@@ -14,7 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.example.projcrudpoo.dao.TarefaDBDAO;
+import org.example.projcrudpoo.dao.UsuarioDAO;
 import org.example.projcrudpoo.dao.UsuarioDBDAO;
+import org.example.projcrudpoo.model.Exportador;
 import org.example.projcrudpoo.model.Tarefa;
 import org.example.projcrudpoo.model.Usuario;
 
@@ -174,6 +176,28 @@ public class TarefaController {
     public void limparCampos(){
         tituloField.clear();
         descricaoField.clear();
+    }
+
+    public void gerarRelatorio() throws SQLException {
+        TarefaDBDAO tarefaDB = new TarefaDBDAO();
+        UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
+        Exportador exportador = new Exportador();
+
+        if(exportador.exportar(tarefaDB.listTodos(usuarioDB.buscaId(usuarioLogado)), usuarioLogado)){
+            Alert mensagem = new Alert(Alert.AlertType.INFORMATION);
+            mensagem.setTitle("Relatorio realizado");
+            mensagem.setHeaderText(null);
+            mensagem.setContentText("Relatorio gerado com sucesso!\nEle se localiza na pasta Relatorios");
+            mensagem.showAndWait();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Erro");
+            alert.setHeaderText(null);
+            alert.setContentText("Relatorio atual não pode ser gerado");
+            alert.showAndWait();
+        }
+
     }
 
 
