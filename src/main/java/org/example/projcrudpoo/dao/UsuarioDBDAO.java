@@ -35,17 +35,6 @@ public class UsuarioDBDAO implements UsuarioDAO, IConst {
         close();
         
     }
-
-    @Override
-    public void atualizarCadastro(Usuario usuarioAtualizado) throws SQLException {
-
-    }
-
-    @Override
-    public void removeCadastro(Usuario usuario) throws SQLException {
-
-    }
-
     @Override
     public boolean verificarEntrada(Usuario usuario) throws SQLException {
         open();

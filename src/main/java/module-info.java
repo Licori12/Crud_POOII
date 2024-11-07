@@ -8,7 +8,7 @@ module org.example.projcrudpoo {
 
     opens org.example.projcrudpoo.main to javafx.fxml;
     opens org.example.projcrudpoo.controller to javafx.fxml;
-    opens org.example.projcrudpoo.model to javafx.base; // Adicione esta linha
+    opens org.example.projcrudpoo.model to javafx.base;
 
     exports org.example.projcrudpoo.main;
     exports org.example.projcrudpoo.controller;
