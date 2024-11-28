@@ -183,7 +183,7 @@ public class TarefaController {
         descricaoField.clear();
     }
 
-    public void gerarRelatorio(ActionEvent event) throws SQLException {
+    public void gerarRelatorio(ActionEvent event) throws SQLException, IOException{
         TarefaDBDAO tarefaDB = new TarefaDBDAO();
         UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
         Exportador exportador = new Exportador();
