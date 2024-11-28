@@ -1,6 +1,5 @@
 package org.example.projcrudpoo.model;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 public class Exportador {
 
     // Método para exportar as tarefas para um arquivo TXT
-    public boolean exportar(ArrayList<Tarefa> tarefas, Usuario usuarioAtual) {
+    public boolean exportar(ArrayList<Tarefa> tarefas, Usuario usuarioAtual) throws IOException {
         // Definir a pasta onde o arquivo será salvo
         String pastaRelatorios = "C:\\Users\\Pardal\\Faculdade\\TRABALHO_POOII\\Relatorios";// Pasta relativa ao diretório onde o programa está sendo executado
         File pasta = new File(pastaRelatorios);
@@ -26,39 +25,20 @@ public class Exportador {
                 obterDataHoraAtual() + ".txt";
 
         // Tentar escrever no arquivo
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
-            writer.write("RELATORIO DE TAREFAS");
-            writer.newLine();
-            writer.write("DATA: " + mostrarData());
-            writer.newLine();
-            writer.write("USUARIO: " + usuarioAtual.getNome());
-            writer.newLine();
-            writer.write("=====================");
-            writer.newLine();
-
-            writer.write("-------------TAREFAS-------------");
-            writer.newLine();
-
-            // Escrever os detalhes das tarefas
-            for (Tarefa tarefa : tarefas) {
-                writer.write("=====================");
-                writer.newLine();
-                writer.write("ID: " + tarefa.getId());
-                writer.newLine();
-                writer.write("Titulo: " + tarefa.getTitulo());
-                writer.newLine();
-                writer.write("Descrição: " + tarefa.getDescricao());
-                writer.newLine();
-                writer.write("Status: " + tarefa.getStatus());
-                writer.newLine();
-            }
-            writer.write("=====================");
-            writer.newLine();
-            return true;
-        } catch (IOException e) {
-            // Em caso de erro, retorna false
-            return false;
+        escreverNoArquivo("RELATORIO\n", nomeArquivo);
+        escreverNoArquivo("DATA: " + mostrarData()+ "\n", nomeArquivo);
+        escreverNoArquivo("USUARIO: " + usuarioAtual.getNome()+ "\n", nomeArquivo);
+        escreverNoArquivo("=====================\n", nomeArquivo);
+        escreverNoArquivo("-------------TAREFAS-------------\n", nomeArquivo);
+        for (Tarefa tarefa:tarefas){
+           escreverNoArquivo("=====================\n", nomeArquivo);
+           escreverNoArquivo("ID: " + tarefa.getId()+ "\n", nomeArquivo);
+           escreverNoArquivo("Titulo: " + tarefa.getTitulo()+ "\n", nomeArquivo);
+           escreverNoArquivo("Descrição: " + tarefa.getDescricao()+ "\n", nomeArquivo);
+           escreverNoArquivo("Status: " + tarefa.getStatus()+ "\n", nomeArquivo);
         }
+        escreverNoArquivo("=====================\n", nomeArquivo);
+        return true;
     }
 
     // Método para obter a data e hora atual no formato desejado
@@ -78,6 +58,18 @@ public class Exportador {
         data += dataHora.substring(4, 8);
 
         return data;
+    }
+    /*
+        2 Fatoração
+        Autor: Leonardo Caparica
+        Criação de metodo para escrever no arquivo
+        Objetivo: Encapsular em um metodo para melhor leitura do codigo
+     */
+    private void escreverNoArquivo(String mensagem, String nomeArquivo) throws IOException {
+        // Usar try-with-resources para fechar automaticamente o FileWriter
+        try (FileWriter writer = new FileWriter(nomeArquivo, true)) { // Modo append ativado
+            writer.write(mensagem);
+        }
     }
 
 }
