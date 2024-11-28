@@ -10,7 +10,7 @@ public class Principal extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Carregar o arquivo FXML
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/org/example/projcrudpoo/view/LoginView.fxml"));
+        FXMLLoader loader = new FXMLLoader(retornaCaminho());
         Parent root = loader.load();
         // Configurar a cena
         Scene scene = new Scene(root);
@@ -22,5 +22,15 @@ public class Principal extends Application {
 
     public static void main(String[] args) {
         launch(args); // Inicia a aplicação JavaFX
+    }
+
+    /*
+        1 Refatoração
+        Autor: Leonardo Caparica
+        Uso de metodo para retornar caminho da pasta para carregamento do LoginView.fxml
+        Objetivo: Facilitar mudanças do código caso necessário
+     */
+    private java.net.URL retornaCaminho(){
+        return this.getClass().getResource("/org/example/projcrudpoo/view/LoginView.fxml");
     }
 }

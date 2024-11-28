@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.example.projcrudpoo.dao.TarefaDBDAO;
-import org.example.projcrudpoo.dao.UsuarioDAO;
 import org.example.projcrudpoo.dao.UsuarioDBDAO;
 import org.example.projcrudpoo.model.Exportador;
 import org.example.projcrudpoo.model.Tarefa;
@@ -47,7 +46,7 @@ public class TarefaController {
 
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize(){
         // Configura as colunas da tabela para mostrar os dados da Tarefa
         idColuna.setCellValueFactory(new PropertyValueFactory<>("id"));
         tituloColuna.setCellValueFactory(new PropertyValueFactory<>("titulo"));
@@ -80,7 +79,7 @@ public class TarefaController {
 
         if (tarefaSelecionada != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/projcrudpoo/view/EdicaoView.fxml"));
+                FXMLLoader loader = new FXMLLoader(retornaCaminho());
                 Parent root = loader.load();
 
                 EdicaoController controller = loader.getController();
@@ -110,6 +109,15 @@ public class TarefaController {
             alert.setContentText("Por favor, selecione uma tarefa para editar.");
             alert.showAndWait();
         }
+    }
+    /*
+        1 Refatoração
+        Autor: Leonardo Caparica
+        Uso de metodo para retornar caminho da pasta para carregamento do LoginView.fxml
+        Objetivo: Facilitar mudanças do código caso necessário
+     */
+    private java.net.URL retornaCaminho(){
+        return getClass().getResource("/org/example/projcrudpoo/view/EdicaoView.fxml");
     }
 
 

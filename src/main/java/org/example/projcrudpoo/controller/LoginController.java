@@ -44,7 +44,7 @@ public class LoginController {
     }
 
     void irCrud(Usuario usuario) throws IOException, SQLException {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/org/example/projcrudpoo/view/TarefaView.fxml"));
+        FXMLLoader loader = new FXMLLoader(retornaCaminho());
         Parent root = loader.load();
 
         // Passando o usuário para o controlador da tela CRUD
@@ -65,5 +65,14 @@ public class LoginController {
         stage.setScene(new Scene(root));
         stage.setTitle(titulo);
         stage.show();
+    }
+    /*
+        1 Refatoração
+        Autor: Leonardo Caparica
+        Uso de metodo para retornar caminho da pasta para carregamento do LoginView.fxml
+        Objetivo: Facilitar mudanças do código caso necessário
+     */
+    private java.net.URL retornaCaminho(){
+        return this.getClass().getResource("/org/example/projcrudpoo/view/TarefaView.fxml");
     }
 }

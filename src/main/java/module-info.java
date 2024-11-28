@@ -12,4 +12,5 @@ module org.example.projcrudpoo {
 
     exports org.example.projcrudpoo.main;
     exports org.example.projcrudpoo.controller;
+    exports org.example.projcrudpoo.model;
 }

@@ -37,7 +37,7 @@ public class CadastroController {
 
     @FXML
     void voltarLogin(ActionEvent event) throws IOException {
-        FXMLLoader loader= new FXMLLoader(this.getClass().getResource("/org/example/projcrudpoo/view/LoginView.fxml"));
+        FXMLLoader loader= new FXMLLoader(retornaCaminho());
         Parent login = loader.load();
 
         Stage stage = (Stage) usernameField.getScene().getWindow();
@@ -45,6 +45,15 @@ public class CadastroController {
         stage.setScene(new Scene(login));
         stage.setTitle("Login - Gerenciador de Tarefas");
         stage.show();
+    }
+    /*
+        1 Refatoração
+        Autor: Leonardo Caparica
+        Uso de metodo para retornar caminho da pasta para carregamento do LoginView.fxml
+        Objetivo: Facilitar mudanças do código caso necessário
+     */
+    private java.net.URL retornaCaminho(){
+        return this.getClass().getResource("/org/example/projcrudpoo/view/LoginView.fxml");
     }
 
 }
