@@ -174,7 +174,6 @@ public class TarefaController {
         mensagem.setHeaderText(null);
         mensagem.setContentText("Deseja voltar ao Login?");
 
-        // Mostra o alerta e aguarda a resposta
         mensagem.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
