@@ -64,11 +64,7 @@ public class TarefaController {
         TarefaDBDAO tarefaDB = new TarefaDBDAO();
 
         tarefaDB.insere(tarefa);
-        Alert mensagem = new Alert(Alert.AlertType.INFORMATION);
-        mensagem.setTitle("Sucesso");
-        mensagem.setHeaderText(null);
-        mensagem.setContentText("Tarefa adicionada com sucesso");
-        mensagem.showAndWait();
+        alertaSucesso("Tarefa adicionada com sucesso");
         limparCampos();
         carregar();
     }
@@ -89,11 +85,7 @@ public class TarefaController {
                 stage.setScene(new Scene(root));
                 stage.setTitle("Editar Tarefa");
                 stage.showAndWait();
-                Alert mensagem = new Alert(Alert.AlertType.INFORMATION);
-                mensagem.setTitle("Sucesso");
-                mensagem.setHeaderText(null);
-                mensagem.setContentText("Tarefa modificada com sucesso");
-                mensagem.showAndWait();
+                alertaSucesso("Tarefa modificada com sucesso");
                 // Atualizar a tabela após a edição
                 carregar(); // Chame o método para recarregar as tarefas
 
@@ -102,12 +94,7 @@ public class TarefaController {
             } catch (SQLException e) {
                 throw new RuntimeException(e);}
         } else {
-            // Exibir um alerta se nenhuma tarefa estiver selecionada
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Nenhuma Tarefa Selecionada");
-            alert.setHeaderText(null);
-            alert.setContentText("Por favor, selecione uma tarefa para editar.");
-            alert.showAndWait();
+            alertaErro("Por favor, selecione uma tarefa para editar.");
         }
     }
     /*
@@ -120,7 +107,6 @@ public class TarefaController {
         return getClass().getResource("/org/example/projcrudpoo/view/EdicaoView.fxml");
     }
 
-
     @FXML
     void excluirTarefa(ActionEvent event) {
         Tarefa tarefaSelecionada = tabelaTarefas.getSelectionModel().getSelectedItem();
@@ -129,22 +115,14 @@ public class TarefaController {
             TarefaDBDAO tarefaDB = new TarefaDBDAO();
             try {
                 tarefaDB.remove(tarefaSelecionada);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Sucesso");
-                alert.setHeaderText(null);
-                alert.setContentText("Tarefa excluida com sucesso");
-                alert.showAndWait();
+                alertaSucesso("Tarefa excluida com sucesso");
                 carregar();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Nenhuma Tarefa Selecionada");
-            alert.setHeaderText(null);
-            alert.setContentText("Por favor, selecione uma tarefa para editar.");
-            alert.showAndWait();
+            alertaErro("Por favor, selecione uma tarefa para editar.");
         }
     }
 
@@ -170,11 +148,7 @@ public class TarefaController {
             carregar();
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Nenhuma Tarefa Selecionada");
-            alert.setHeaderText(null);
-            alert.setContentText("Por favor, selecione uma tarefa.");
-            alert.showAndWait();
+            alertaErro("Por favor, selecione uma tarefa.");
         }
     }
 
@@ -189,18 +163,10 @@ public class TarefaController {
         Exportador exportador = new Exportador();
 
         if(exportador.exportar(tarefaDB.listTodos(usuarioDB.buscaId(usuarioLogado)), usuarioLogado)){
-            Alert mensagem = new Alert(Alert.AlertType.INFORMATION);
-            mensagem.setTitle("Relatorio realizado");
-            mensagem.setHeaderText(null);
-            mensagem.setContentText("Relatorio gerado com sucesso!\nEle se localiza na pasta Relatorios");
-            mensagem.showAndWait();
+            alertaSucesso("Relatorio gerado com sucesso!\nEle se localiza na pasta Relatorios");
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Erro");
-            alert.setHeaderText(null);
-            alert.setContentText("Relatorio atual não pode ser gerado");
-            alert.showAndWait();
+            alertaErro("Relatorio atual não pode ser gerado");
         }
 
     }
@@ -235,6 +201,24 @@ public class TarefaController {
             }
         });
     }
-
-
+    /*
+        3 Refatoração
+        Autor: Leonardo Caparica
+        Uso de metodo para imprimir a mensagem de erro
+        Objetivo: Facilitar leitura do codigo
+     */
+    private void alertaSucesso(String mensagem){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
+    }
+    private void alertaErro(String mensagem){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("ERRO");
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
+    }
 }

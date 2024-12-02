@@ -35,11 +35,7 @@ public class LoginController {
         if (usuarioDB.verificarEntrada(usuario)) {
             irCrud(usuario);
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("ERRO");
-            alert.setHeaderText(null);
-            alert.setContentText("Usuario não encontrado");
-            alert.showAndWait();
+           alertaErro("Usuario não encontrado");
         }
     }
 
@@ -74,5 +70,18 @@ public class LoginController {
      */
     private java.net.URL retornaCaminho(){
         return this.getClass().getResource("/org/example/projcrudpoo/view/TarefaView.fxml");
+    }
+    /*
+        3 Refatoração
+        Autor: Leonardo Caparica
+        Uso de metodo para imprimir a mensagem de erro
+        Objetivo: Facilitar leitura do codigo
+     */
+    private void alertaErro(String mensagem){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("ERRO");
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
     }
 }

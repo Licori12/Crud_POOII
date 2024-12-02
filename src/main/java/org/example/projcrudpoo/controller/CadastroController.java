@@ -28,11 +28,7 @@ public class CadastroController {
         Usuario usuario = new Usuario(emailField.getText(),usernameField.getText(),passwordField.getText());
         UsuarioDBDAO usuarioDAO = new UsuarioDBDAO();
         usuarioDAO.cadastrar(usuario);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Sucesso");
-        alert.setHeaderText(null);
-        alert.setContentText("Usuário cadastrado com sucesso!");
-        alert.showAndWait();
+        alertaSucesso("Usuário cadastrado com sucesso!");
     }
 
     @FXML
@@ -55,5 +51,20 @@ public class CadastroController {
     private java.net.URL retornaCaminho(){
         return this.getClass().getResource("/org/example/projcrudpoo/view/LoginView.fxml");
     }
+
+    /*
+        3 Refatoração
+        Autor: Leonardo Caparica
+        Uso de metodo para imprimir a mensagem de erro
+        Objetivo: Facilitar leitura do codigo
+     */
+    public void alertaSucesso(String mensagem){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
+    }
+
 
 }
