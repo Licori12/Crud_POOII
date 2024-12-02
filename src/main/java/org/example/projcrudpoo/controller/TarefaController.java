@@ -81,10 +81,7 @@ public class TarefaController {
                 EdicaoController controller = loader.getController();
                 controller.setTarefa(tarefaSelecionada); // Passando a tarefa selecionada para o controlador
 
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Editar Tarefa");
-                stage.showAndWait();
+                carregarStage(root, "Editar Tarefa", true);
                 alertaSucesso("Tarefa modificada com sucesso");
                 // Atualizar a tabela após a edição
                 carregar(); // Chame o método para recarregar as tarefas
@@ -189,11 +186,7 @@ public class TarefaController {
                     Stage stageAtual = (Stage) tabelaTarefas.getScene().getWindow();
                     stageAtual.close();
 
-                    // Cria uma nova cena para o login
-                    Stage stageLogin = new Stage();
-                    stageLogin.setScene(new Scene(loginView));
-                    stageLogin.setTitle("Login - Gerenciador de Tarefas");
-                    stageLogin.show();
+                    carregarStage(loginView,"Login - Gerenciador de Tarefas",false);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -220,5 +213,19 @@ public class TarefaController {
         alert.setHeaderText(null);
         alert.setContentText(mensagem);
         alert.showAndWait();
+    }
+
+    /*
+        4 Refatoração
+        Autor: Leonardo Caparica
+        Uso de metodo para criação de stage
+        Objetivo: Facilitar leitura do codigo
+     */
+    private void carregarStage(Parent view, String titulo, boolean aguardar){
+        Stage stage = new Stage();
+        stage.setScene(new Scene(view));
+        stage.setTitle(titulo);
+        if(aguardar) stage.showAndWait();
+        else stage.show();
     }
 }
