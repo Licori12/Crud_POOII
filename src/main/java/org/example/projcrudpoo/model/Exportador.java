@@ -9,11 +9,21 @@ import java.util.ArrayList;
 
 public class Exportador {
 
+    /*
+
+    2a refatoracao Lucas
+    Path da pasta relatorio agora é uma constante
+    Objetivo: melhor manutenção
+     */
+
+
+    // Constante para o caminho da pasta de relatórios
+    private static final String PASTA_RELATORIOS = "C:\\Users\\Pardal\\Faculdade\\TRABALHO_POOII\\Relatorios";
+
     // Método para exportar as tarefas para um arquivo TXT
     public boolean exportar(ArrayList<Tarefa> tarefas, Usuario usuarioAtual) throws IOException {
-        // Definir a pasta onde o arquivo será salvo
-        String pastaRelatorios = "C:\\Users\\Pardal\\Faculdade\\TRABALHO_POOII\\Relatorios";
-        File pasta = new File(pastaRelatorios);
+        // Criar um objeto File para a pasta de relatórios
+        File pasta = new File(PASTA_RELATORIOS);
 
         // Verificar se a pasta existe, se não, criar a pasta
         if (!pasta.exists()) {
@@ -21,7 +31,7 @@ public class Exportador {
         }
 
         // Gerar o nome do arquivo com o nome do usuário e a data/hora
-        String nomeArquivo = pastaRelatorios + "/Relatorio_tarefas_" + usuarioAtual.getNome() + "_" +
+        String nomeArquivo = PASTA_RELATORIOS + "/Relatorio_tarefas_" + usuarioAtual.getNome() + "_" +
                 obterDataHoraAtual() + ".txt";
 
         // Escrever no arquivo
