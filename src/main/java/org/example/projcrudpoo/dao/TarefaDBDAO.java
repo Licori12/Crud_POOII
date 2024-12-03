@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TarefaDBDAO implements IConst, TarefaDAO{
+public class TarefaDBDAO implements IConst, TarefaDAO {
     private String sql;
     private Connection connection;
     private PreparedStatement statement;
@@ -22,15 +22,16 @@ public class TarefaDBDAO implements IConst, TarefaDAO{
     private void close() throws SQLException {
         connection.close();
     }
+
     @Override
     public void insere(Tarefa tarefa) throws SQLException {
         open();
         sql = "INSERT INTO tarefa (titulo, descricao, status, id_usuario) VALUES (?,?,?,?)";
         statement = connection.prepareStatement(sql);
-        statement.setString(1,tarefa.getTitulo());
-        statement.setString(2,tarefa.getDescricao());
-        statement.setString(3,tarefa.getStatus());
-        statement.setInt(4,tarefa.getIdUsuario());
+        statement.setString(1, tarefa.getTitulo());
+        statement.setString(2, tarefa.getDescricao());
+        statement.setString(3, tarefa.getStatus());
+        statement.setInt(4, tarefa.getIdUsuario());
 
         statement.executeUpdate();
 
@@ -40,12 +41,12 @@ public class TarefaDBDAO implements IConst, TarefaDAO{
     @Override
     public void atualiza(Tarefa tarefa) throws SQLException {
         open();
-        sql = "UPDATE tarefa SET titulo=?, descricao=? WHERE id = ?";
+        sql = "UPDATE tarefa SET titulo=?, descricao=? WHERE id=?";
         statement = connection.prepareStatement(sql);
 
-        statement.setString(1,tarefa.getTitulo());
+        statement.setString(1, tarefa.getTitulo());
         statement.setString(2, tarefa.getDescricao());
-        statement.setInt(3,tarefa.getId());
+        statement.setInt(3, tarefa.getId());
         statement.executeUpdate();
 
         close();
@@ -54,24 +55,24 @@ public class TarefaDBDAO implements IConst, TarefaDAO{
     @Override
     public void remove(Tarefa tarefa) throws SQLException {
         open();
-        sql = "DELETE FROM tarefa WHERE id = ?;";
+        sql = "DELETE FROM tarefa WHERE id=?;";
         statement = connection.prepareStatement(sql);
-        statement.setInt(1,tarefa.getId());
+        statement.setInt(1, tarefa.getId());
         statement.executeUpdate();
         close();
     }
 
     @Override
-    public ArrayList<Tarefa> listTodos(int idUsuario) throws SQLException {
+    public List<Tarefa> listTodos(int idUsuario) throws SQLException { // somente feito alteração de ArrayList<Tarefa> para List<Tarefa>, facilita a manutenção do código 
         open();
-        sql = "SELECT * FROM tarefa WHERE id_usuario = ? ;";
+        sql = "SELECT * FROM tarefa WHERE id_usuario = ?;";
         statement = connection.prepareStatement(sql);
-        statement.setInt(1,idUsuario);
+        statement.setInt(1, idUsuario);
         result = statement.executeQuery();
 
-        ArrayList<Tarefa> tarefas = new ArrayList<>();
+        List<Tarefa> tarefas = new ArrayList<>(); // Declarado como List
 
-        while(result.next()){
+        while (result.next()) {
             Tarefa tarefa = new Tarefa();
             tarefa.setTitulo(result.getString("titulo"));
             tarefa.setDescricao(result.getString("descricao"));
@@ -82,16 +83,16 @@ public class TarefaDBDAO implements IConst, TarefaDAO{
         }
         close();
 
-        return tarefas;
+        return tarefas; // Retorno como List
     }
 
     @Override
     public void marcarComoConcluida(Tarefa tarefa) throws SQLException {
         open();
-        sql = "UPDATE tarefa SET status=? WHERE id = ?;";
+        sql = "UPDATE tarefa SET status=? WHERE id=?;";
         statement = connection.prepareStatement(sql);
-        statement.setString(1,tarefa.getStatus());
-        statement.setInt(2,tarefa.getId());
+        statement.setString(1, tarefa.getStatus());
+        statement.setInt(2, tarefa.getId());
         statement.executeUpdate();
         close();
     }
