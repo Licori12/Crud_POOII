@@ -9,11 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/*
+1a refatoração Lucas Cogrossi
+Antes os campos sql, statement e result eram atributos da classe, compartilhados entre os métodos.
+Agora eses campos foram transformados em variáveis locais nos métodos, usando tratamento de exceções
+Objetivo: tornar o codigo mais modular, melhora legibilidade
+
+ */
+
 public class UsuarioDBDAO implements UsuarioDAO, IConst {
-    private String sql;
     private Connection connection;
-    private PreparedStatement statement;
-    private ResultSet result;
 
     private void open() throws SQLException {
         connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
@@ -25,55 +30,52 @@ public class UsuarioDBDAO implements UsuarioDAO, IConst {
 
     @Override
     public void cadastrar(Usuario usuario) throws SQLException {
+        String sql = "INSERT INTO usuario (nome,email,senha) VALUES (?,?,?);";
         open();
-        sql = "INSERT INTO usuario (nome,email,senha) VALUES (?,?,?);";
-        statement = connection.prepareStatement(sql);
-        statement.setString(1, usuario.getNome());
-        statement.setString(2, usuario.getEmail());
-        statement.setString(3, usuario.getSenha());
-        statement.executeUpdate();
-        close();
-        
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, usuario.getNome());
+            statement.setString(2, usuario.getEmail());
+            statement.setString(3, usuario.getSenha());
+            statement.executeUpdate();
+        } finally {
+            close();
+        }
     }
+
     @Override
     public boolean verificarEntrada(Usuario usuario) throws SQLException {
+        String sql = "SELECT * FROM usuario WHERE nome = ? AND senha = ?;";
         open();
-        sql = "SELECT * FROM usuario WHERE nome = ? AND senha = ?;";
-        statement = connection.prepareStatement(sql);
-        statement.setString(1, usuario.getNome());
-        statement.setString(2, usuario.getSenha());
-
-        result = statement.executeQuery();
-
-        close();
-        // Se a consulta retornar um registro, o login é válido.
-        return result.next();
-    }
-
-    public int buscaId(Usuario usuario) throws SQLException {
-        int id = -1;  // Inicializa com um valor padrão indicando "não encontrado"
-        open();  // Abre a conexão
-
-        try {
-            sql = "SELECT id FROM usuario WHERE nome = ? AND senha = ?;";
-            statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, usuario.getNome());
             statement.setString(2, usuario.getSenha());
 
-            result = statement.executeQuery();
-
-            // Move o cursor para a primeira linha
-            if (result.next()) {
-                id = result.getInt("id");  // Obtém o ID
+            try (ResultSet result = statement.executeQuery()) {
+                return result.next();
             }
         } finally {
-            close();  // Fecha a conexão, independente do que aconteceu
+            close();
         }
-
-        return id;  // Retorna o ID encontrado ou -1 se não encontrado
     }
 
+    public int buscaId(Usuario usuario) throws SQLException {
+        String sql = "SELECT id FROM usuario WHERE nome = ? AND senha = ?;";
+        open();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, usuario.getNome());
+            statement.setString(2, usuario.getSenha());
 
-    public UsuarioDBDAO(){
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    return result.getInt("id");
+                }
+            }
+        } finally {
+            close();
+        }
+        return -1; // Retorna -1 se não encontrado
+    }
+
+    public UsuarioDBDAO() {
     }
 }
