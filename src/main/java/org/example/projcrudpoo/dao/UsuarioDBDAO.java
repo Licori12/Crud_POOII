@@ -12,10 +12,16 @@ import java.util.ArrayList;
 /*
 1a refatoração Lucas Cogrossi
 Antes os campos sql, statement e result eram atributos da classe, compartilhados entre os métodos.
-Agora eses campos foram transformados em variáveis locais nos métodos, usando tratamento de exceções
-Objetivo: tornar o codigo mais modular, melhora legibilidade
+Agora esses campos foram transformados em variáveis locais nos métodos, usando tratamento de exceções.
+Objetivo: tornar o código mais modular, melhorar legibilidade.
+*/
 
- */
+/*
+Refatoração Atual: Substituição do Retorno de -1 por Exceção
+Foi criada uma exceção personalizada `UsuarioNaoEncontradoException` para lidar com casos onde
+o método `buscaId` não encontra o usuário no banco de dados.
+Objetivo: Melhorar a clareza do código e evitar valores mágicos.
+*/
 
 public class UsuarioDBDAO implements UsuarioDAO, IConst {
     private Connection connection;
@@ -73,9 +79,18 @@ public class UsuarioDBDAO implements UsuarioDAO, IConst {
         } finally {
             close();
         }
-        return -1; // Retorna -1 se não encontrado
+
+        // Lança exceção personalizada se o usuário não for encontrado
+        throw new UsuarioNaoEncontradoException("Usuário não encontrado para nome: " + usuario.getNome());
     }
 
     public UsuarioDBDAO() {
+    }
+}
+
+// Exceção personalizada para lidar com casos de usuário não encontrado
+class UsuarioNaoEncontradoException extends RuntimeException {
+    public UsuarioNaoEncontradoException(String message) {
+        super(message);
     }
 }
