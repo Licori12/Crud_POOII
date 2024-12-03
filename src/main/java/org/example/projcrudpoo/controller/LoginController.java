@@ -68,14 +68,29 @@ public class LoginController {
         stage.show();
     }
 
-    private void carregarTela(String fxmlPath, String titulo) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-        Parent root = loader.load();
 
-        Stage stage = (Stage) usernameField.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.setTitle(titulo);
-        stage.show();
+    /*
+    4a refatoracao lucas
+    Parecida com a primeira, adiciona tratamento de erros nesse metodo
+    Objetivo: tratamento de erros
+     */
+    private void carregarTela(String fxmlPath, String titulo) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(titulo);
+            stage.show();
+        } catch (IOException e) {
+            // Log da exceção para rastrear o erro
+            System.err.println("Erro ao carregar a tela: " + e.getMessage());
+            e.printStackTrace();
+
+
+            alertaErro("Não foi possível carregar a tela.");
+        }
     }
     /*
         1 Refatoração
