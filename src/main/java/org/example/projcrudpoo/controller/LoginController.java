@@ -27,15 +27,30 @@ public class LoginController {
         carregarTela("/org/example/projcrudpoo/view/CadastroView.fxml", "Cadastro - Gerenciador de Tarefas");
     }
 
-    @FXML
-    void entrar(ActionEvent event) throws SQLException, IOException {
-        Usuario usuario = new Usuario(usernameField.getText(), passwordField.getText());
-        UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
 
-        if (usuarioDB.verificarEntrada(usuario)) {
-            irCrud(usuario);
-        } else {
-           alertaErro("Usuario não encontrado");
+    /*
+    3a refatoracao Lucas
+    Antes esse metodo lançava as exceptions mas não tinha nada para tratar esses erros.
+    Usa o metodo criado na 3a refatoracao do caparica
+    Objetivo: tratamento de erros
+     */
+    @FXML
+    void entrar(ActionEvent event) {
+        try {
+            Usuario usuario = new Usuario(usernameField.getText(), passwordField.getText());
+            UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
+
+            if (usuarioDB.verificarEntrada(usuario)) {
+                irCrud(usuario);
+            } else {
+                alertaErro("Usuário não encontrado.");
+            }
+        } catch (SQLException e) {
+            alertaErro("Erro de banco de dados: " + e.getMessage());
+        } catch (IOException e) {
+            alertaErro("Erro de entrada/saída: " + e.getMessage());
+        } catch (Exception e) {
+            alertaErro("Ocorreu um erro inesperado: " + e.getMessage());
         }
     }
 
