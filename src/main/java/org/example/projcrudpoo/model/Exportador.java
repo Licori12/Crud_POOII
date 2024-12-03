@@ -16,7 +16,6 @@ public class Exportador {
     Objetivo: melhor manutenção
      */
 
-
     // Constante para o caminho da pasta de relatórios
     private static final String PASTA_RELATORIOS = "C:\\Users\\Pardal\\Faculdade\\TRABALHO_POOII\\Relatorios";
 
@@ -41,13 +40,21 @@ public class Exportador {
         escreverNoArquivo("=====================\n", nomeArquivo);
         escreverNoArquivo("-------------TAREFAS-------------\n", nomeArquivo);
 
+
+	/** 
+	* autor Guilherme Licori 
+    * Metodo: Uso de StringBuilder para acumular as strings
+	* objetivo: evitar a criação de múltiplos objetos, deixar o código mais legível 
+	 */
+        StringBuilder conteudoTarefas = new StringBuilder();
         for (Tarefa tarefa : tarefas) {
-            escreverNoArquivo("=====================\n", nomeArquivo);
-            escreverNoArquivo("ID: " + tarefa.getId() + "\n", nomeArquivo);
-            escreverNoArquivo("Titulo: " + tarefa.getTitulo() + "\n", nomeArquivo);
-            escreverNoArquivo("Descrição: " + tarefa.getDescricao() + "\n", nomeArquivo);
-            escreverNoArquivo("Status: " + tarefa.getStatus() + "\n", nomeArquivo);
+            conteudoTarefas.append("=====================\n");
+            conteudoTarefas.append("ID: ").append(tarefa.getId()).append("\n");
+            conteudoTarefas.append("Titulo: ").append(tarefa.getTitulo()).append("\n");
+            conteudoTarefas.append("Descrição: ").append(tarefa.getDescricao()).append("\n");
+            conteudoTarefas.append("Status: ").append(tarefa.getStatus()).append("\n");
         }
+        escreverNoArquivo(conteudoTarefas.toString(), nomeArquivo);
 
         escreverNoArquivo("=====================\n", nomeArquivo);
         return true;
