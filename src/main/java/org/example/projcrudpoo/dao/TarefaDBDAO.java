@@ -11,93 +11,76 @@ import java.util.List;
 
 public class TarefaDBDAO implements IConst, TarefaDAO {
     private String sql;
-    private Connection connection;
-    private PreparedStatement statement;
-    private ResultSet result;
-
-    private void open() throws SQLException {
-        connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
-    }
-
-    private void close() throws SQLException {
-        connection.close();
-    }
 
     @Override
     public void insere(Tarefa tarefa) throws SQLException {
-        open();
+        // Substituição do gerenciamento manual por try-with-resources para fechamento automático de recursos.(primeira refatoracao)
         sql = "INSERT INTO tarefa (titulo, descricao, status, id_usuario) VALUES (?,?,?,?)";
-        statement = connection.prepareStatement(sql);
-        statement.setString(1, tarefa.getTitulo());
-        statement.setString(2, tarefa.getDescricao());
-        statement.setString(3, tarefa.getStatus());
-        statement.setInt(4, tarefa.getIdUsuario());
-
-        statement.executeUpdate();
-
-        close();
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, tarefa.getTitulo());
+            statement.setString(2, tarefa.getDescricao());
+            statement.setString(3, tarefa.getStatus());
+            statement.setInt(4, tarefa.getIdUsuario());
+            statement.executeUpdate();
+        }
     }
 
     @Override
     public void atualiza(Tarefa tarefa) throws SQLException {
-        open();
+        // Uso do try-with-resources para liberar automaticamente o PreparedStatement e a conexão.
         sql = "UPDATE tarefa SET titulo=?, descricao=? WHERE id=?";
-        statement = connection.prepareStatement(sql);
-
-        statement.setString(1, tarefa.getTitulo());
-        statement.setString(2, tarefa.getDescricao());
-        statement.setInt(3, tarefa.getId());
-        statement.executeUpdate();
-
-        close();
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, tarefa.getTitulo());
+            statement.setString(2, tarefa.getDescricao());
+            statement.setInt(3, tarefa.getId());
+            statement.executeUpdate();
+        }
     }
 
     @Override
     public void remove(Tarefa tarefa) throws SQLException {
-        open();
+        // Gerenciamento automático de recursos com try-with-resources.
         sql = "DELETE FROM tarefa WHERE id=?;";
-        statement = connection.prepareStatement(sql);
-        statement.setInt(1, tarefa.getId());
-        statement.executeUpdate();
-        close();
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, tarefa.getId());
+            statement.executeUpdate();
+        }
     }
 
     @Override
-	/** autor: Guilherme Licori
- 	 * Metodo: //alteração de ArrayList<Tarefa> para List<Tarefa>
-	 * Objetivo: facilitar a manutencao do codigo e sua modularidade
-	*/
     public List<Tarefa> listTodos(int idUsuario) throws SQLException {
-        open();
+        // Fechamento automático de ResultSet, PreparedStatement e Connection.
         sql = "SELECT * FROM tarefa WHERE id_usuario = ?;";
-        statement = connection.prepareStatement(sql);
-        statement.setInt(1, idUsuario);
-        result = statement.executeQuery();
-
-        List<Tarefa> tarefas = new ArrayList<>(); // Declarado como List
-
-        while (result.next()) {
-            Tarefa tarefa = new Tarefa();
-            tarefa.setTitulo(result.getString("titulo"));
-            tarefa.setDescricao(result.getString("descricao"));
-            tarefa.setStatus(result.getString("status"));
-            tarefa.setId(result.getInt("id"));
-
-            tarefas.add(tarefa);
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idUsuario);
+            try (ResultSet result = statement.executeQuery()) {
+                List<Tarefa> tarefas = new ArrayList<>(); // Declarado como List, facilita a manutenção do código(segunda refatoracao)
+                while (result.next()) {
+                    Tarefa tarefa = new Tarefa();
+                    tarefa.setTitulo(result.getString("titulo"));
+                    tarefa.setDescricao(result.getString("descricao"));
+                    tarefa.setStatus(result.getString("status"));
+                    tarefa.setId(result.getInt("id"));
+                    tarefas.add(tarefa);
+                }
+                return tarefas;
+            }
         }
-        close();
-
-        return tarefas; // Retorno como List
     }
 
     @Override
     public void marcarComoConcluida(Tarefa tarefa) throws SQLException {
-        open();
+        // Utilização de try-with-resources para melhor gerenciamento de recursos.
         sql = "UPDATE tarefa SET status=? WHERE id=?;";
-        statement = connection.prepareStatement(sql);
-        statement.setString(1, tarefa.getStatus());
-        statement.setInt(2, tarefa.getId());
-        statement.executeUpdate();
-        close();
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, tarefa.getStatus());
+            statement.setInt(2, tarefa.getId());
+            statement.executeUpdate();
+        }
     }
 }
