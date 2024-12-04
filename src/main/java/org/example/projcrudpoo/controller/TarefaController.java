@@ -44,9 +44,8 @@ public class TarefaController {
     @FXML
     private TableColumn<Tarefa,String> statusColuna;
 
-
     @FXML
-    public void initialize(){
+    public void initialize() {
         // Configura as colunas da tabela para mostrar os dados da Tarefa
         idColuna.setCellValueFactory(new PropertyValueFactory<>("id"));
         tituloColuna.setCellValueFactory(new PropertyValueFactory<>("titulo"));
@@ -57,8 +56,31 @@ public class TarefaController {
         listaTarefa = FXCollections.observableArrayList();
         tabelaTarefas.setItems(listaTarefa);
     }
+
+    /*
+        4 refatoracao: validação de campos obrigatórios
+        Autor: Guilherme Licori 
+	Implementado como parte da refatoração para validar se os campos
+        Título e Descrição estão preenchidos antes de adicionar ou editar tarefas.
+    */
+    private boolean validarCampos() {
+        if (tituloField.getText().isBlank() || descricaoField.getText().isBlank()) {
+            alertaErro("Os campos Título e Descrição são obrigatórios!");
+            return false;
+        }
+        return true;
+    }
+
     @FXML
     void adicionarTarefa(ActionEvent event) throws SQLException {
+        /*
+            MODIFICAÇÃO: Adicionada validação de campos obrigatórios.
+            Objetivo: Garantir que Título e Descrição estejam preenchidos antes de continuar.
+        */
+        if (!validarCampos()) {
+            return; // Interrompe a execução caso a validação falhe
+        }
+
         UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
         Tarefa tarefa = new Tarefa(tituloField.getText(), descricaoField.getText(), usuarioDB.buscaId(usuarioLogado));
         TarefaDBDAO tarefaDB = new TarefaDBDAO();
@@ -71,6 +93,14 @@ public class TarefaController {
 
     @FXML
     void editarTarefa(ActionEvent event) {
+        /*
+            MODIFICAÇÃO: Adicionada validação de campos obrigatórios.
+            Objetivo: Garantir que Título e Descrição estejam preenchidos antes de continuar.
+        */
+        if (!validarCampos()) {
+            return; // Interrompe a execução caso a validação falhe
+        }
+
         Tarefa tarefaSelecionada = tabelaTarefas.getSelectionModel().getSelectedItem();
 
         if (tarefaSelecionada != null) {
@@ -86,21 +116,21 @@ public class TarefaController {
                 // Atualizar a tabela após a edição
                 carregar(); // Chame o método para recarregar as tarefas
 
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 e.printStackTrace();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);}
+            }
         } else {
             alertaErro("Por favor, selecione uma tarefa para editar.");
         }
     }
+
     /*
         1 Refatoração
         Autor: Leonardo Caparica
-        Uso de metodo para retornar caminho da pasta para carregamento do LoginView.fxml
+        Uso de método para retornar caminho da pasta para carregamento do LoginView.fxml
         Objetivo: Facilitar mudanças do código caso necessário
      */
-    private java.net.URL retornaCaminho(){
+    private java.net.URL retornaCaminho() {
         return getClass().getResource("/org/example/projcrudpoo/view/EdicaoView.fxml");
     }
 
@@ -108,17 +138,16 @@ public class TarefaController {
     void excluirTarefa(ActionEvent event) {
         Tarefa tarefaSelecionada = tabelaTarefas.getSelectionModel().getSelectedItem();
 
-        if(tarefaSelecionada != null){
+        if (tarefaSelecionada != null) {
             TarefaDBDAO tarefaDB = new TarefaDBDAO();
             try {
                 tarefaDB.remove(tarefaSelecionada);
-                alertaSucesso("Tarefa excluida com sucesso");
+                alertaSucesso("Tarefa excluída com sucesso");
                 carregar();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             alertaErro("Por favor, selecione uma tarefa para editar.");
         }
     }
@@ -136,39 +165,36 @@ public class TarefaController {
 
     public void alterarStatus(ActionEvent event) throws SQLException {
         Tarefa tarefaSelecionada = tabelaTarefas.getSelectionModel().getSelectedItem();
-        if(tarefaSelecionada != null){
+        if (tarefaSelecionada != null) {
             tarefaSelecionada.setStatus();
 
             TarefaDBDAO tarefaDB = new TarefaDBDAO();
             tarefaDB.marcarComoConcluida(tarefaSelecionada);
 
             carregar();
-        }
-        else{
+        } else {
             alertaErro("Por favor, selecione uma tarefa.");
         }
     }
 
-    public void limparCampos(){
+    public void limparCampos() {
         tituloField.clear();
         descricaoField.clear();
     }
 
-    public void gerarRelatorio(ActionEvent event) throws SQLException, IOException{
+    public void gerarRelatorio(ActionEvent event) throws SQLException, IOException {
         TarefaDBDAO tarefaDB = new TarefaDBDAO();
         UsuarioDBDAO usuarioDB = new UsuarioDBDAO();
         Exportador exportador = new Exportador();
 
-        if(exportador.exportar(tarefaDB.listTodos(usuarioDB.buscaId(usuarioLogado)), usuarioLogado)){
-            alertaSucesso("Relatorio gerado com sucesso!\nEle se localiza na pasta Relatorios");
+        if (exportador.exportar(tarefaDB.listTodos(usuarioDB.buscaId(usuarioLogado)), usuarioLogado)) {
+            alertaSucesso("Relatório gerado com sucesso!\nEle se localiza na pasta Relatórios");
+        } else {
+            alertaErro("Relatório atual não pode ser gerado");
         }
-        else{
-            alertaErro("Relatorio atual não pode ser gerado");
-        }
-
     }
 
-    public void sair(){
+    public void sair() {
         Alert mensagem = new Alert(Alert.AlertType.CONFIRMATION);
         mensagem.setTitle("Voltar ao login");
         mensagem.setHeaderText(null);
@@ -185,7 +211,7 @@ public class TarefaController {
                     Stage stageAtual = (Stage) tabelaTarefas.getScene().getWindow();
                     stageAtual.close();
 
-                    carregarStage(loginView,"Login - Gerenciador de Tarefas",false);
+                    carregarStage(loginView, "Login - Gerenciador de Tarefas", false);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -193,20 +219,22 @@ public class TarefaController {
             }
         });
     }
+
     /*
         3 Refatoração
         Autor: Leonardo Caparica
-        Uso de metodo para imprimir a mensagem de erro
-        Objetivo: Facilitar leitura do codigo
+        Uso de método para imprimir a mensagem de erro
+        Objetivo: Facilitar leitura do código
      */
-    private void alertaSucesso(String mensagem){
+    private void alertaSucesso(String mensagem) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Sucesso");
         alert.setHeaderText(null);
         alert.setContentText(mensagem);
         alert.showAndWait();
     }
-    private void alertaErro(String mensagem){
+
+    private void alertaErro(String mensagem) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("ERRO");
         alert.setHeaderText(null);
@@ -217,14 +245,14 @@ public class TarefaController {
     /*
         4 Refatoração
         Autor: Leonardo Caparica
-        Uso de metodo para criação de stage
-        Objetivo: Facilitar leitura do codigo
+        Uso de método para criação de stage
+        Objetivo: Facilitar leitura do código
      */
-    private void carregarStage(Parent view, String titulo, boolean aguardar){
+    private void carregarStage(Parent view, String titulo, boolean aguardar) {
         Stage stage = new Stage();
         stage.setScene(new Scene(view));
         stage.setTitle(titulo);
-        if(aguardar) stage.showAndWait();
+        if (aguardar) stage.showAndWait();
         else stage.show();
     }
 }
