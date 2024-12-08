@@ -141,4 +141,55 @@ class TarefaDBDAOTest {
             assertFalse(resultado.next());
         }
     }
+    /*
+        4° Teste
+        Autor: Leonardo Caparica
+        Teste para verificar atualização do banco de dados
+     */
+    @Test
+    void atualiza() throws SQLException {
+        Tarefa tarefaTeste4 = new Tarefa("teste4", "descricao4", 15);
+        TarefaDBDAO tarefaDBDAO = new TarefaDBDAO();
+
+        tarefaDBDAO.insere(tarefaTeste4);
+
+        String sqlRecuperaId = "SELECT * FROM tarefa WHERE titulo='teste4' AND descricao='descricao4';";
+        int idTarefaTeste = 0;
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sqlRecuperaId)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                idTarefaTeste = resultSet.getInt("id");
+            } else {
+                fail("Tarefa não encontrada após inserção.");
+            }
+        }
+
+        tarefaTeste4.setId(idTarefaTeste);
+        tarefaTeste4.setTitulo("teste4mudado");
+        tarefaDBDAO.atualiza(tarefaTeste4);
+
+        String sqlValidaAtualizacao = "SELECT * FROM tarefa WHERE descricao = 'descricao4';";
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sqlValidaAtualizacao)) {
+
+            ResultSet resultado = statement.executeQuery();
+            if (resultado.next()) {
+                Tarefa tarefaResultado = new Tarefa(
+                        resultado.getString("titulo"),
+                        resultado.getString("descricao"),
+                        resultado.getInt("id_usuario"),
+                        resultado.getString("status")
+                );
+
+                assertEquals(tarefaTeste4.getTitulo(), tarefaResultado.getTitulo(),
+                        "O título da tarefa no banco não foi atualizado corretamente.");
+
+                tarefaDBDAO.remove(tarefaTeste4);
+            } else {
+                fail("Tarefa não encontrada após atualização.");
+            }
+        }
+    }
 }
