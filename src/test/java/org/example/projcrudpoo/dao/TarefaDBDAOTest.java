@@ -45,7 +45,11 @@ class TarefaDBDAOTest {
             }
         }
     }
-
+    /*
+        2° Teste
+        Autor: Leonardo Caparica
+        Teste para verificar se alteração para concluida funciona perfeitamente.
+     */
     @Test
     void marcarComoConcluida() throws SQLException {
         // Inicializa a tarefa e o DAO
@@ -105,4 +109,36 @@ class TarefaDBDAOTest {
         }
     }
 
+    /*
+        3° Teste
+        Autor: Leonardo Caparica
+        Teste para remoção de tarefa do banco de dados.
+     */
+    @Test
+    void remove() throws SQLException{
+        Tarefa tarefaTeste3 = new Tarefa("teste3","descricao3", 15);
+        TarefaDBDAO tarefaDBDAO = new TarefaDBDAO();
+
+        tarefaDBDAO.insere(tarefaTeste3);
+        String sql = "SELECT * FROM tarefa WHERE titulo='teste3' AND descricao='descricao3'";
+        int idTarefaTeste = 0;
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                idTarefaTeste = resultSet.getInt("id");
+            } else {
+                fail("Tarefa não encontrada após inserção.");
+            }
+        }
+        tarefaTeste3.setId(idTarefaTeste);
+
+        tarefaDBDAO.remove(tarefaTeste3);
+        try (Connection connection = Conexao.getConexao(Conexao.stringDeConexao, Conexao.usuario, Conexao.senha);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultado = statement.executeQuery();
+
+            assertFalse(resultado.next());
+        }
+    }
 }
