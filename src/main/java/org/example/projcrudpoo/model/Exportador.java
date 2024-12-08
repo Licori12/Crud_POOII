@@ -6,6 +6,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Exportador {
 
@@ -20,7 +21,7 @@ public class Exportador {
     private static final String PASTA_RELATORIOS = "C:\\Users\\Pardal\\Faculdade\\TRABALHO_POOII\\Relatorios";
 
     // Método para exportar as tarefas para um arquivo TXT
-    public boolean exportar(ArrayList<Tarefa> tarefas, Usuario usuarioAtual) throws IOException {
+    public boolean exportar(List<Tarefa> tarefas, Usuario usuarioAtual) throws IOException {
         // Criar um objeto File para a pasta de relatórios
         File pasta = new File(PASTA_RELATORIOS);
 
